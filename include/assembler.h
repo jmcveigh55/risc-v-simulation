@@ -28,7 +28,7 @@ static void convert_J_format(instruction *instr_line, parse *p_line);
 
 linked_list* init_instruction_memory();
 void destroy_instruction_memory(linked_list **instr_mem);
-void print_instruction_structure(const linked_list *instr_mem);
+void print_assembled_structure(const linked_list *instr_mem);
 
 
 #endif /* _ASSEMBLER_H_ */

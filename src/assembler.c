@@ -4,7 +4,7 @@
 #include "assembler.h"
 
 
-void instr_mem_from_asm_instruction_memory(linked_list **instr_mem, linked_list *p_list)
+void instr_mem_from_asm_parse_list(linked_list **instr_mem, linked_list *p_list)
 {
     p_list = p_list->next;
     while (p_list != NULL) {
@@ -91,4 +91,9 @@ void destroy_instruction_memory(linked_list **instr_mem)
     }
     free(*instr_mem);
     *instr_mem = NULL;
+}
+
+void print_assembled_structure(const linked_list *instr_mem)
+{
+
 }

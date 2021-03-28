@@ -14,7 +14,7 @@ int parse_input(int argc, char **argv, char** input_file);
 int main(int argc, char **argv)
 {
     char *asm_file_name;
-    linked_list *parsed_program;
+    linked_list *parsed_program, *instruction_memory;
 
     if (parse_input(argc, argv, &asm_file_name)) {
         print_usage();
@@ -28,7 +28,14 @@ int main(int argc, char **argv)
     print_parsed_structure(parsed_program);
 #endif
 
+    //instr_mem_from_asm_parse_list(&parsed_program, instruction_memory);
     destroy_parse_list(&parsed_program);
+
+#if DEBUG
+    //print_assembled_structure(parsed_program);
+#endif
+
+    //destroy_instruction_memory(&instruction_memory);
 
     return 0;
 }
