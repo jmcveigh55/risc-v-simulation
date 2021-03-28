@@ -19,47 +19,47 @@ static instruction* instr_from_asm_parse(parse *p_line)
 {
     instruction *instr_item = (instruction*)malloc(sizeof(*instr_item));
 
-    switch(p_line->parse_type) {
+    switch(p_line->parse_format) {
         case 'R':
-            convert_R_type(instr_item, p_line);
+            convert_R_format(instr_item, p_line);
             break;
         case 'I':
-            convert_I_type(instr_item, p_line);
+            convert_I_format(instr_item, p_line);
             break;
         case 'S':
-            convert_S_type(instr_item, p_line);
+            convert_S_format(instr_item, p_line);
             break;
         case 'B':
-            convert_B_type(instr_item, p_line);
+            convert_B_format(instr_item, p_line);
             break;
         case 'J':
-            convert_J_type(instr_item, p_line);
+            convert_J_format(instr_item, p_line);
     }
 
     return instr_item;
 }
 
-static void convert_R_type(instruction *instr_line, parse *p_line)
+static void convert_R_format(instruction *instr_line, parse *p_line)
 {
     return;
 }
 
-static void convert_I_type(instruction *instr_line, parse *p_line)
+static void convert_I_format(instruction *instr_line, parse *p_line)
 {
     return;
 }
 
-static void convert_S_type(instruction *instr_line, parse *p_line)
+static void convert_S_format(instruction *instr_line, parse *p_line)
 {
     return;
 }
 
-static void convert_B_type(instruction *instr_line, parse *p_line)
+static void convert_B_format(instruction *instr_line, parse *p_line)
 {
     return;
 }
 
-static void convert_J_type(instruction *instr_line, parse *p_line)
+static void convert_J_format(instruction *instr_line, parse *p_line)
 {
     return;
 }

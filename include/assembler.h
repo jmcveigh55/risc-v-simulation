@@ -20,11 +20,11 @@ struct instruction_s {
 
 void instr_mem_from_asm_parse_list(linked_list **instr_mem, linked_list *p_list);
 static instruction* instr_from_asm_parse(parse *p_line);
-static void convert_R_type(instruction *instr_line, parse *p_line);
-static void convert_I_type(instruction *instr_line, parse *p_line);
-static void convert_S_type(instruction *instr_line, parse *p_line);
-static void convert_B_type(instruction *instr_line, parse *p_line);
-static void convert_J_type(instruction *instr_line, parse *p_line);
+static void convert_R_format(instruction *instr_line, parse *p_line);
+static void convert_I_format(instruction *instr_line, parse *p_line);
+static void convert_S_format(instruction *instr_line, parse *p_line);
+static void convert_B_format(instruction *instr_line, parse *p_line);
+static void convert_J_format(instruction *instr_line, parse *p_line);
 
 linked_list* init_instruction_memory();
 void destroy_instruction_memory(linked_list **instr_mem);

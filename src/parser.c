@@ -20,7 +20,7 @@ void parse_instructions(linked_list **p_instrs, char *asm_file)
 
     asm_fd = fopen(asm_file, "r");
     if (!asm_fd) {
-        perror("Error openning assembly file: ");
+        perror("Error openning assembly file");
         exit(EXIT_FAILURE);
     }
 
@@ -51,7 +51,7 @@ static parse* parse_line(char *asm_line)
     for (ac=0, s=asm_line; s[ac]; s[ac]==' ' ? ac++ : *s++); /* ac: param count */
 
     p_line->operand = strdup( strtok(asm_line, " ") );
-    p_line->parse_type = get_parse_type(p_line->operand);
+    p_line->parse_format = get_parse_format(p_line->operand);
 
     p_line->param_count = ac;
     p_line->parameters = (char**)malloc( ac * sizeof(*p_line->parameters) );
@@ -109,7 +109,7 @@ static void destroy_parse(parse **p_line)
     free(*p_line);
 }
 
-static char get_parse_type(const char *operand)
+static char get_parse_format(const char *operand)
 {
     if (is_in(operand, ROperands))
         return 'R';
@@ -136,7 +136,7 @@ void print_parsed_structure(const linked_list* p_list)
         else {
             printf("item: %d\n", i);
             printf("\toperand: %s\n", ( (parse*)p_list->item )->operand);
-            printf("\ttype: %c\n", ( (parse*)p_list->item )->parse_type);
+            printf("\ttype: %c\n", ( (parse*)p_list->item )->parse_format);
 
             for (j=0; j < ( (parse*)p_list->item )->param_count; j++)
                 printf("\tparam %d: %s\n", j, ( (parse*)p_list->item )->parameters[j]);
