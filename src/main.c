@@ -5,7 +5,7 @@
 #include "parser.h"
 #include "assembler.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 void print_usage();
 int parse_input(int argc, char **argv, char** input_file);
@@ -28,14 +28,14 @@ int main(int argc, char **argv)
     print_parsed_structure(parsed_program);
 #endif
 
-    //instr_mem_from_asm_parse_list(&parsed_program, instruction_memory);
+    instr_mem_from_asm_parse_list(&instruction_memory, parsed_program);
     destroy_parse_list(&parsed_program);
 
 #if DEBUG
     //print_assembled_structure(parsed_program);
 #endif
 
-    //destroy_instruction_memory(&instruction_memory);
+    destroy_instruction_memory(&instruction_memory);
 
     return 0;
 }
