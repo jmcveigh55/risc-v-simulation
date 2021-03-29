@@ -18,7 +18,7 @@ struct instruction_s {
 };
 
 
-void instr_mem_from_asm_parse_list(linked_list **instr_mem, linked_list *p_list);
+void instr_mem_from_asm_parse_list(instruction **instr_mem, linked_list *p_list, unsigned int len);
 static instruction* instr_from_asm_parse(parse *p_line);
 static void convert_R_format(instruction *instr_line, char *instr_meta, parse *p_line);
 static void convert_I_format(instruction *instr_line, char *instr_meta, parse *p_line);
@@ -27,9 +27,9 @@ static void convert_B_format(instruction *instr_line, char *instr_meta, parse *p
 static void convert_U_format(instruction *instr_line, char *instr_meta, parse *p_line);
 static void convert_J_format(instruction *instr_line, char *instr_meta, parse *p_line);
 
-linked_list* init_instruction_memory();
-void destroy_instruction_memory(linked_list **instr_mem);
-void print_assembled_structure(const linked_list *instr_mem);
+instruction** init_instruction_memory(unsigned int len);
+void destroy_instruction_memory(instruction **instr_mem, unsigned int len);
+void print_assembled_structure(const instruction *instr_mem, unsigned int len);
 
 
 

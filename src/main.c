@@ -15,7 +15,8 @@ int main(int argc, char **argv)
 {
     unsigned int num_lines;
     char *asm_file_name;
-    linked_list *parsed_program, *instruction_memory;
+    linked_list *parsed_program;
+    instruction **instruction_memory;
 
     if (parse_input(argc, argv, &asm_file_name)) {
         print_usage();
@@ -29,15 +30,15 @@ int main(int argc, char **argv)
     print_parsed_structure(parsed_program);
 #endif
 
-    instruction_memory = init_instruction_memory();
-    instr_mem_from_asm_parse_list(&instruction_memory, parsed_program);
+    instruction_memory = init_instruction_memory(num_lines);
+    instr_mem_from_asm_parse_list(instruction_memory, parsed_program, num_lines);
     destroy_parse_list(&parsed_program);
 
 #if DEBUG
     //print_assembled_structure(parsed_program);
 #endif
 
-    destroy_instruction_memory(&instruction_memory);
+    destroy_instruction_memory(instruction_memory, num_lines);
 
     return 0;
 }

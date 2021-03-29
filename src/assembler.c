@@ -5,16 +5,15 @@
 #include "assembler.h"
 
 
-void instr_mem_from_asm_parse_list(linked_list **instr_mem, linked_list *p_list)
+void instr_mem_from_asm_parse_list(instruction **instr_mem, linked_list *p_list, unsigned int len)
 {
-    p_list = p_list->next;
+    int i;
 
-    while (p_list != NULL) {
-        linked_list_add_head( instr_mem, (void*)instr_from_asm_parse( (parse*)p_list->item ) );
+    p_list = p_list->next; /* skip head */
+    for (i=0; i< len; i++) {
+        instr_mem[i] = instr_from_asm_parse( (parse*)p_list->item );
         p_list = p_list->next;
     }
-
-    linked_list_reverse(instr_mem);
 }
 
 static instruction* instr_from_asm_parse(parse *p_line)
@@ -41,6 +40,8 @@ static instruction* instr_from_asm_parse(parse *p_line)
     }
     free(test_operand);
     fclose(instrs_fd);
+
+    printf("%s %s\n", p_line->operand, test_operand);
 
     switch(p_line->format) {
         case 'R':
@@ -96,36 +97,29 @@ static void convert_J_format(instruction *instr_line, char *instr_meta, parse *p
     return;
 }
 
-linked_list* init_instruction_memory()
+instruction** init_instruction_memory(unsigned int len)
 {
-    linked_list *head;
+    instruction **head;
 
-    head = (linked_list*)malloc(sizeof(*head));
+    head = (instruction**)malloc(len * sizeof(*head));
     if (!head) {
         perror("Failed to malloc head: ");
         exit(EXIT_FAILURE);
     }
 
-    head->item = NULL;
-    head->next = NULL;
-
     return head;
 }
 
-void destroy_instruction_memory(linked_list **instr_mem)
+void destroy_instruction_memory(instruction **instr_mem, unsigned int len)
 {
-    linked_list *c, *n;
+    int i;
 
-    c = (*instr_mem)->next;
-    while (c != NULL) {
-        n = c->next;
-        c = n;
-    }
-    free(*instr_mem);
-    *instr_mem = NULL;
+    for (i=0; i < len; i++)
+        free(instr_mem[i]);
+    free(instr_mem);
 }
 
-void print_assembled_structure(const linked_list *instr_mem)
+void print_assembled_structure(const instruction *instr_mem, unsigned int len)
 {
 
 }
