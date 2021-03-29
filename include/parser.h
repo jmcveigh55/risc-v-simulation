@@ -13,7 +13,7 @@ struct parse_s {
 };
 
 
-void parse_instructions(linked_list **p_instrs, char *asm_file);
+void parse_instructions(linked_list **p_instrs, char *asm_file, unsigned int *line_count);
 static parse* parse_line(char *asm_line);
 
 linked_list* init_parse_list();

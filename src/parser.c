@@ -17,7 +17,7 @@ static const char *UOperands[] = {"lui", "auipc", NULL};
 static const char *JOperands[] = {"jal", NULL};
 
 
-void parse_instructions(linked_list **p_instrs, char *asm_file)
+void parse_instructions(linked_list **p_instrs, char *asm_file, unsigned int *line_count)
 {
     FILE* asm_fd;
     size_t len;
@@ -31,10 +31,12 @@ void parse_instructions(linked_list **p_instrs, char *asm_file)
 
     /* Stack each item in a linked list */
     buff = NULL;
+    *line_count = 0;
     while( getline( &buff, &len, asm_fd ) != -1 )
     {
         buff[ strlen(buff)-1 ] = '\0';
         linked_list_add_head( p_instrs, (void*)parse_line(buff) );
+        (*line_count)++;
     }
 
     /* Reverse the linked list to get the proper commands order

@@ -13,6 +13,7 @@ int parse_input(int argc, char **argv, char** input_file);
 
 int main(int argc, char **argv)
 {
+    unsigned int num_lines;
     char *asm_file_name;
     linked_list *parsed_program, *instruction_memory;
 
@@ -22,12 +23,13 @@ int main(int argc, char **argv)
     }
 
     parsed_program = init_parse_list();
-    parse_instructions(&parsed_program, asm_file_name);
+    parse_instructions(&parsed_program, asm_file_name, &num_lines);
 
 #if DEBUG
     print_parsed_structure(parsed_program);
 #endif
 
+    instruction_memory = init_instruction_memory();
     instr_mem_from_asm_parse_list(&instruction_memory, parsed_program);
     destroy_parse_list(&parsed_program);
 
