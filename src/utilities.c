@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "utilities.h"
 
@@ -10,7 +11,7 @@ void linked_list_add_head(linked_list **head, void *item)
     new = (linked_list*)malloc(sizeof(*new));
     new->item = item;
 
-    new->next = (*head)->next;
+    new->next = (*head)->next; /* Line causing seg fault */
     (*head)->next = new;
 }
 
@@ -36,4 +37,23 @@ unsigned int is_in(const char *item, const char *array[])
         if (!strcmp(item, array[i]))
         return 1;
     return 0;
+}
+
+char* to_lower(char *input_string)
+{
+    char *p;
+
+    /* Raise each by 0x60, restrict to ASCII */
+    for(p = input_string; *p; ++p)
+        *p = *p > 0x40 && *p < 0x5b ? *p | 0x60 : *p;
+
+    return input_string;
+}
+
+void print_bin(unsigned int number)
+{
+    unsigned int i;
+
+    for (i = 1 << 31; i > 0; i = i / 2)
+        (number & i) ? printf("1") : printf("0");
 }

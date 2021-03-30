@@ -1,9 +1,9 @@
-#include <stdlib.h>
+#include <string.h>
 
 #include "registers.h"
 
 
-const char* REGISTERS[] = {
+const char* REGISTERS[NUM_REGS] = {
         "x0",
         "x1",
         "x2",
@@ -67,6 +67,15 @@ const char* REGISTERS[] = {
         "f28",
         "f29",
         "f30",
-        "f31",
-        NULL
+        "f31"
 };
+
+int reg_index(char *reg)
+{
+    unsigned int i;
+    for (i=0; i < NUM_REGS; i++)
+        if ( !strcmp(REGISTERS[i], reg) )
+            break;
+
+    return i;
+}

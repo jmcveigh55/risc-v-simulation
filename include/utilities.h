@@ -11,5 +11,8 @@ struct linked_list_s {
 void linked_list_add_head(linked_list **L, void *item);
 void linked_list_reverse(linked_list **L);
 unsigned int is_in(const char *item, const char *array[]);
+char* to_lower(char *input_string);
+void print_bin(unsigned int number);
+
 
 #endif /* _UTILITIES_H_ */
