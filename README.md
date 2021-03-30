@@ -1,8 +1,13 @@
 # ***RISC-V Assembler and Emulator***
-## Author: Jack McVeigh
-## Date: 3/19/2021
+### Author: Jack McVeigh
+### Start Date: 3/19/2021
+### Last README Edit Date: 3/30/2021
 
 ---
+
+## Latest
+* Finished the parser and assembler.
+* Starting the emulator.
 
 ## Purpose:
 * Assemble RISC-V assembly code into machine code.
