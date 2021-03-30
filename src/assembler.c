@@ -98,8 +98,7 @@ static void convert_I_format(instruction *instr, char *instr_meta, parse *p_line
     unsigned int rs1;
     int16_t imm;
 
-    if(!strcmp(p_line->operand, "ld") ||
-       !strcmp(p_line->operand, "jalr")) {
+    if(strchr(p_line->parameters[1], '(')) {
         char *temp = strdup(p_line->parameters[1]);
 
         imm = strtol(strtok(temp, "("), NULL, 10);
@@ -123,6 +122,35 @@ static void convert_I_format(instruction *instr, char *instr_meta, parse *p_line
 static void convert_S_format(instruction *instr, char *instr_meta, parse *p_line)
 {
     printf("instr_meta: %s\n", instr_meta);
+
+    strtok(instr_meta, ","); /* skip operand */
+
+    unsigned int opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
+    int16_t imm;
+    unsigned int funct3 = (int)strtol( strtok(NULL, ","), NULL, 2);
+    unsigned int rs1;
+    unsigned int rs2 = reg_index( p_line->parameters[0] );
+
+    if(strchr(p_line->parameters[1], '(')) {
+        char *temp = strdup(p_line->parameters[1]);
+
+        imm = strtol(strtok(temp, "("), NULL, 10);
+        rs1 = reg_index( strtok(NULL, ")") );
+
+        free(temp);
+    }
+    else {
+        rs1 = reg_index(p_line->parameters[1]);
+        imm = strtol(p_line->parameters[2], NULL, 10);
+    }
+
+    *instr = 0;
+    *instr |= opcode;
+    *instr |= (imm & 0x1F)  << 7;               /* imm[0:4] */
+    *instr |= funct3        << (7 + 5);
+    *instr |= rs1           << (7 + 5 + 3);
+    *instr |= rs2           << (7 + 5 + 3 + 5);
+    *instr |= (imm & 0xFE0) << (7 + 5 + 3 + 5); /* imm[5:11] */
 }
 
 static void convert_B_format(instruction *instr, char *instr_meta, parse *p_line)
