@@ -148,7 +148,7 @@ static void convert_S_format(instruction *instr, char *instr_meta, parse *p_line
     *instr |= funct3        << (7 + 5);
     *instr |= rs1           << (7 + 5 + 3);
     *instr |= rs2           << (7 + 5 + 3 + 5);
-    *instr |= (imm & 0xFE0) << (7 + 5 + 3 + 5); /* imm[5:11] */
+    *instr |= (imm & 0xFE0) << 20;              /* imm[5:11] ( >> 5 << 7 + 5 + 3 + 5 + 5) */
 }
 
 static void convert_B_format(instruction *instr, char *instr_meta, parse *p_line)
