@@ -188,8 +188,6 @@ static void convert_U_format(instruction *instr, char *instr_meta, parse *p_line
 
 static void convert_J_format(instruction *instr, char *instr_meta, parse *p_line)
 {
-    printf("instr_meta: %s\n", instr_meta);
-
     strtok(instr_meta, ","); /* skip operand */
 
     unsigned int opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
