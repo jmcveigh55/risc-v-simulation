@@ -7,20 +7,6 @@
 #include "parser.h"
 
 typedef uint32_t instruction;
-/*
-typedef struct instruction_s instruction;
-struct instruction_s {
-    char type;
-    int original[32];
-    int opcode[7];
-    int imm[20];
-    int rs1[5];
-    int rs2[5];
-    int rd[5];
-    int funct3[3];
-    int funct7[7];
-};
-*/
 
 void instr_mem_from_asm_parse_list(instruction *instr_mem, linked_list *p_list, unsigned int len);
 static instruction instr_from_asm_parse(parse *p_line);

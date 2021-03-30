@@ -200,6 +200,7 @@ static void convert_J_format(instruction *instr, char *instr_meta, parse *p_line
     *instr |= (imm & 0xFF000);        /* imm[19:12] ( >> 12 << 7 + 5 ) */
     *instr |= (imm & 0x800)    << 9;  /* imm[11]    ( >> 11 << 7 + 5 + 8) */ 
     *instr |= (imm & 0x7FE)    << 20; /* imm[10:1]  ( >> 1  << 7 + 5 + 8 + 1) */
+    *instr |= (imm & 0x100000) << 12; /* imm[20]  ( >> 20  << 7 + 5 + 8 + 1 + 11) */
 }
 
 instruction* init_instruction_memory(unsigned int len)
