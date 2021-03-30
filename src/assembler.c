@@ -121,8 +121,6 @@ static void convert_I_format(instruction *instr, char *instr_meta, parse *p_line
 
 static void convert_S_format(instruction *instr, char *instr_meta, parse *p_line)
 {
-    printf("instr_meta: %s\n", instr_meta);
-
     strtok(instr_meta, ","); /* skip operand */
 
     unsigned int opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
@@ -155,17 +153,55 @@ static void convert_S_format(instruction *instr, char *instr_meta, parse *p_line
 
 static void convert_B_format(instruction *instr, char *instr_meta, parse *p_line)
 {
-    printf("instr_meta: %s\n", instr_meta);
+    strtok(instr_meta, ","); /* skip operand */
+
+    unsigned int opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
+    int16_t imm = strtol(p_line->parameters[2], NULL, 10);
+    unsigned int funct3 = (int)strtol( strtok(NULL, ","), NULL, 2);
+    unsigned int rs1 = reg_index( p_line->parameters[0] );
+    unsigned int rs2 = reg_index( p_line->parameters[1] );
+
+    *instr = 0;
+    *instr |= opcode;
+    *instr |= (imm & 0x800)  >> 4;                   /* imm[11]   ( >> 11 << 7 ) */
+    *instr |= (imm & 0x1E)   << 7;                   /* imm[1:4]  ( >> 1 << 7 + 1 ) */
+    *instr |= funct3         << (7 + 1 + 4);
+    *instr |= rs1            << (7 + 1 + 4 + 3);
+    *instr |= rs2            << (7 + 1 + 4 + 3 + 5);
+    *instr |= (imm & 0x7E0)  >> 20;                  /* imm[10:5] ( >> 5 << 7 + 1 + 4 + 3 + 5 + 5 ) */
+    *instr |= (imm & 0x1000) << 19;                  /* imm[12]   ( >> 12 << 7 + 1 + 4 + 3 + 5 + 5 + 6 ) */
 }
 
 static void convert_U_format(instruction *instr, char *instr_meta, parse *p_line)
 {
-    printf("instr_meta: %s\n", instr_meta);
+    strtok(instr_meta, ","); /* skip operand */
+
+    unsigned int opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
+    unsigned int rd = reg_index( p_line->parameters[0] );
+    int16_t imm = strtol(p_line->parameters[2], NULL, 10);
+
+    *instr = 0;
+    *instr |= opcode;
+    *instr |= rd << 7;
+    *instr |= (imm & 0xFFFFF000); /* imm[31:12] ( >> 12 << 7 + 5 ) */
 }
 
 static void convert_J_format(instruction *instr, char *instr_meta, parse *p_line)
 {
     printf("instr_meta: %s\n", instr_meta);
+
+    strtok(instr_meta, ","); /* skip operand */
+
+    unsigned int opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
+    unsigned int rd = reg_index( p_line->parameters[0] );
+    int16_t imm = strtol(p_line->parameters[2], NULL, 10);
+
+    *instr = 0;
+    *instr |= opcode;
+    *instr |= rd               << 7;
+    *instr |= (imm & 0xFF000);        /* imm[19:12] ( >> 12 << 7 + 5 ) */
+    *instr |= (imm & 0x800)    << 9;  /* imm[11]    ( >> 11 << 7 + 5 + 8) */ 
+    *instr |= (imm & 0x7FE)    << 20; /* imm[10:1]  ( >> 1  << 7 + 5 + 8 + 1) */
 }
 
 instruction* init_instruction_memory(unsigned int len)
