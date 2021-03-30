@@ -49,3 +49,11 @@ char* to_lower(char *input_string)
 
     return input_string;
 }
+
+void print_bin(unsigned int number)
+{
+    unsigned int i;
+
+    for (i = 1 << 31; i > 0; i = i / 2)
+        (number & i) ? printf("1") : printf("0");
+}

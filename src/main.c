@@ -5,7 +5,9 @@
 #include "parser.h"
 #include "assembler.h"
 
-#define DEBUG 0
+#define FULL_DEBUG 0
+#define PARSER_DEBUG 0 || FULL_DEBUG
+#define ASSEMBLER_DEBUG 1 || FULL_DEBUG
 
 void print_usage();
 int parse_input(int argc, char **argv, char** input_file);
@@ -13,10 +15,10 @@ int parse_input(int argc, char **argv, char** input_file);
 
 int main(int argc, char **argv)
 {
-    unsigned int num_lines;
+    unsigned int num_instrs;
     char *asm_file_name;
     linked_list *parsed_program;
-    instruction **instruction_memory;
+    instruction *instruction_memory;
 
     if (parse_input(argc, argv, &asm_file_name)) {
         print_usage();
@@ -24,21 +26,21 @@ int main(int argc, char **argv)
     }
 
     parsed_program = init_parse_list();
-    parse_instructions(&parsed_program, asm_file_name, &num_lines);
+    parse_instructions(&parsed_program, asm_file_name, &num_instrs);
 
-#if DEBUG
+#if PARSER_DEBUG
     print_parsed_structure(parsed_program);
 #endif
 
-    instruction_memory = init_instruction_memory(num_lines);
-    instr_mem_from_asm_parse_list(instruction_memory, parsed_program, num_lines);
+    instruction_memory = init_instruction_memory(num_instrs);
+    instr_mem_from_asm_parse_list(instruction_memory, parsed_program, num_instrs);
     destroy_parse_list(&parsed_program);
 
-#if DEBUG
-    //print_assembled_structure(parsed_program);
+#if ASSEMBLER_DEBUG
+    print_assembled_structure(instruction_memory, num_instrs);
 #endif
 
-    destroy_instruction_memory(instruction_memory, num_lines);
+    destroy_instruction_memory(instruction_memory, num_instrs);
 
     return 0;
 }

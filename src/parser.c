@@ -68,7 +68,7 @@ static parse* parse_line(char *asm_line)
     }
 
     for(i=0; i < ac; i++)
-        p_line->parameters[i] = strdup( strtok(NULL, " ") );
+        p_line->parameters[i] = strdup( strtok(NULL, ", ") );
 
     return p_line;
 }
