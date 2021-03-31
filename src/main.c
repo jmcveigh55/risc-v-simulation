@@ -6,7 +6,7 @@
 #include "assembler.h"
 
 
-static unsigned int verbose = 0;
+static unsigned verbose = 0;
 
 void print_usage();
 int parse_input(int argc, char **argv, char** input_file);
@@ -14,7 +14,7 @@ int parse_input(int argc, char **argv, char** input_file);
 
 int main(int argc, char **argv)
 {
-    unsigned int num_instrs;
+    unsigned num_instrs;
     char *asm_file_name;
     linked_list *parsed_program;
     instruction *instruction_memory;
@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     if (verbose)
         print_assembled_structure(instruction_memory, num_instrs);
 
-    destroy_instruction_memory(instruction_memory, num_instrs);
+    destroy_instruction_memory(instruction_memory);
 
     return 0;
 }
