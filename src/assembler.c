@@ -192,7 +192,7 @@ static void convert_J_format(instruction *instr, char *instr_meta, parse *p_line
 
     unsigned opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
     unsigned rd = reg_index( p_line->parameters[0] );
-    int16_t imm = strtol(p_line->parameters[2], NULL, 10);
+    int16_t imm = strtol(p_line->parameters[1], NULL, 10);
 
     *instr = 0;
     *instr |= opcode;
