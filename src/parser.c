@@ -138,10 +138,8 @@ void print_parsed_structure(const linked_list* p_list)
 
     i = 0;
     while (p_list != NULL) {
-        if (!i)
-            printf("item: head\n");
-        else {
-            printf("item: %d\n", i);
+        if (i) {
+            printf("item: %d\n", i-1);
             printf("\toperand: %s\n", ( (parse*)p_list->item )->operand);
             printf("\ttype: %c\n", ( (parse*)p_list->item )->format);
 
