@@ -226,7 +226,7 @@ void print_assembled_structure(const instruction *instr_mem, unsigned len)
     unsigned i;
 
     for (i=0; i < len; i++) {
-        printf("instruction_memory[%d]: 0x%x    \t0b", i,  instr_mem[i]);
+        printf("instruction_memory[%d]:\t0x%x    \t0b", i,  instr_mem[i]);
         print_bin(instr_mem[i]);
         printf("\n");
     }
