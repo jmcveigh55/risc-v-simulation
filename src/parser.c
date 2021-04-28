@@ -25,7 +25,7 @@ void parse_instructions(linked_list **p_instrs, char *asm_file, unsigned *line_c
 
     asm_fd = fopen(asm_file, "r");
     if (!asm_fd) {
-        perror("Error opening assembly file");
+        perror("parse_instructions: Error opening assembly file");
         exit(EXIT_FAILURE);
     }
 
@@ -58,17 +58,26 @@ static parse* parse_line(char *asm_line)
     for (ac=0, s=asm_line; s[ac]; s[ac]==' ' ? ac++ : *s++); /* ac: param count */
 
     p_line->operand = strdup( to_lower( strtok(asm_line, " ") ) );
+    if (!p_line->operand) {
+        perror("parse_line: Failed to strdup p_line->operand: ");
+        exit(EXIT_FAILURE);
+    }
     p_line->format = get_format(p_line->operand);
 
     p_line->param_count = ac;
     p_line->parameters = (char**)malloc( ac * sizeof(*p_line->parameters) );
     if (!p_line->parameters) {
-        perror("Failed to malloc p_line->parameters: ");
+        perror("parse_line: Failed to malloc p_line->parameters: ");
         exit(EXIT_FAILURE);
     }
 
-    for(i=0; i < ac; i++)
+    for(i=0; i < ac; i++) {
         p_line->parameters[i] = strdup( strtok(NULL, ", ") );
+        if (!p_line->parameters[i]) {
+            perror("parse_line: Failed to strdup p_line->parameters[i]: ");
+            exit(EXIT_FAILURE);
+        }
+    }
 
     return p_line;
 }
@@ -79,7 +88,7 @@ linked_list* init_parse_list()
 
     head = (linked_list*)malloc(sizeof(*head));
     if (!head) {
-        perror("Failed to malloc head: ");
+        perror("init_parse_list: Failed to malloc head: ");
         exit(EXIT_FAILURE);
     }
 
