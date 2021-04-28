@@ -72,7 +72,7 @@ const char* REGISTERS[NUM_REGS] = {
 
 int reg_index(char *reg)
 {
-    unsigned int i;
+    unsigned i;
     for (i=0; i < NUM_REGS; i++)
         if ( !strcmp(REGISTERS[i], reg) )
             break;

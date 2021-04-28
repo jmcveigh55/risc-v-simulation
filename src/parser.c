@@ -17,7 +17,7 @@ static const char *UOperands[] = {"lui", "auipc", NULL};
 static const char *JOperands[] = {"jal", NULL};
 
 
-void parse_instructions(linked_list **p_instrs, char *asm_file, unsigned int *line_count)
+void parse_instructions(linked_list **p_instrs, char *asm_file, unsigned *line_count)
 {
     FILE* asm_fd;
     size_t len;
@@ -50,7 +50,7 @@ void parse_instructions(linked_list **p_instrs, char *asm_file, unsigned int *li
 static parse* parse_line(char *asm_line)
 {
     char *s, *temp;
-    unsigned int ac, i;
+    unsigned ac, i;
     parse *p_line;
 
     p_line = (parse*)malloc(sizeof(*p_line));
@@ -105,7 +105,7 @@ void destroy_parse_list(linked_list **p_list)
 
 static void destroy_parse(parse **p_line)
 {
-    int i;
+    unsigned i;
 
     free( (*p_line)->operand );
 
@@ -134,14 +134,12 @@ static char get_format(const char *operand)
 
 void print_parsed_structure(const linked_list* p_list)
 {
-    unsigned int i, j;
+    unsigned i, j;
 
     i = 0;
     while (p_list != NULL) {
-        if (!i)
-            printf("item: head\n");
-        else {
-            printf("item: %d\n", i);
+        if (i) {
+            printf("item: %d\n", i-1);
             printf("\toperand: %s\n", ( (parse*)p_list->item )->operand);
             printf("\ttype: %c\n", ( (parse*)p_list->item )->format);
 

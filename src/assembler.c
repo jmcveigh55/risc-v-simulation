@@ -6,9 +6,9 @@
 #include "registers.h"
 
 
-void instr_mem_from_asm_parse_list(instruction *instr_mem, linked_list *p_list, unsigned int len)
+void instr_mem_from_asm_parse_list(instruction *instr_mem, linked_list *p_list, unsigned len)
 {
-    int i;
+    unsigned i;
 
     p_list = p_list->next; /* skip head */
     for (i=0; i< len; i++) {
@@ -72,12 +72,12 @@ static void convert_R_format(instruction *instr, char *instr_meta, parse *p_line
 {
     strtok(instr_meta, ","); /* skip operand */
 
-    unsigned int opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
-    unsigned int rd = reg_index( p_line->parameters[0] );
-    unsigned int funct3 = (int)strtol( strtok(NULL, ","), NULL, 2);
-    unsigned int rs1 = reg_index( p_line->parameters[1] );
-    unsigned int rs2 = reg_index( p_line->parameters[2] );
-    unsigned int funct7 = (int)strtol( strtok(NULL, ","), NULL, 2);
+    unsigned opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
+    unsigned rd = reg_index( p_line->parameters[0] );
+    unsigned funct3 = (int)strtol( strtok(NULL, ","), NULL, 2);
+    unsigned rs1 = reg_index( p_line->parameters[1] );
+    unsigned rs2 = reg_index( p_line->parameters[2] );
+    unsigned funct7 = (int)strtol( strtok(NULL, ","), NULL, 2);
 
     *instr = 0;
     *instr |= opcode;
@@ -92,10 +92,10 @@ static void convert_I_format(instruction *instr, char *instr_meta, parse *p_line
 {
     strtok(instr_meta, ","); /* skip operand */
 
-    unsigned int opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
-    unsigned int rd = reg_index( p_line->parameters[0] );
-    unsigned int funct3 = (int)strtol( strtok(NULL, ","), NULL, 2);
-    unsigned int rs1;
+    unsigned opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
+    unsigned rd = reg_index( p_line->parameters[0] );
+    unsigned funct3 = (int)strtol( strtok(NULL, ","), NULL, 2);
+    unsigned rs1;
     int16_t imm;
 
     if(strchr(p_line->parameters[1], '(')) {
@@ -123,11 +123,11 @@ static void convert_S_format(instruction *instr, char *instr_meta, parse *p_line
 {
     strtok(instr_meta, ","); /* skip operand */
 
-    unsigned int opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
+    unsigned opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
     int16_t imm;
-    unsigned int funct3 = (int)strtol( strtok(NULL, ","), NULL, 2);
-    unsigned int rs1;
-    unsigned int rs2 = reg_index( p_line->parameters[0] );
+    unsigned funct3 = (int)strtol( strtok(NULL, ","), NULL, 2);
+    unsigned rs1;
+    unsigned rs2 = reg_index( p_line->parameters[0] );
 
     if(strchr(p_line->parameters[1], '(')) {
         char *temp = strdup(p_line->parameters[1]);
@@ -155,11 +155,11 @@ static void convert_B_format(instruction *instr, char *instr_meta, parse *p_line
 {
     strtok(instr_meta, ","); /* skip operand */
 
-    unsigned int opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
+    unsigned opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
     int16_t imm = strtol(p_line->parameters[2], NULL, 10);
-    unsigned int funct3 = (int)strtol( strtok(NULL, ","), NULL, 2);
-    unsigned int rs1 = reg_index( p_line->parameters[0] );
-    unsigned int rs2 = reg_index( p_line->parameters[1] );
+    unsigned funct3 = (int)strtol( strtok(NULL, ","), NULL, 2);
+    unsigned rs1 = reg_index( p_line->parameters[0] );
+    unsigned rs2 = reg_index( p_line->parameters[1] );
 
     *instr = 0;
     *instr |= opcode;
@@ -176,8 +176,8 @@ static void convert_U_format(instruction *instr, char *instr_meta, parse *p_line
 {
     strtok(instr_meta, ","); /* skip operand */
 
-    unsigned int opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
-    unsigned int rd = reg_index( p_line->parameters[0] );
+    unsigned opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
+    unsigned rd = reg_index( p_line->parameters[0] );
     int16_t imm = strtol(p_line->parameters[2], NULL, 10);
 
     *instr = 0;
@@ -190,9 +190,9 @@ static void convert_J_format(instruction *instr, char *instr_meta, parse *p_line
 {
     strtok(instr_meta, ","); /* skip operand */
 
-    unsigned int opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
-    unsigned int rd = reg_index( p_line->parameters[0] );
-    int16_t imm = strtol(p_line->parameters[2], NULL, 10);
+    unsigned opcode = (int)strtol( strtok(NULL, ","), NULL, 2);
+    unsigned rd = reg_index( p_line->parameters[0] );
+    int16_t imm = strtol(p_line->parameters[1], NULL, 10);
 
     *instr = 0;
     *instr |= opcode;
@@ -203,7 +203,7 @@ static void convert_J_format(instruction *instr, char *instr_meta, parse *p_line
     *instr |= (imm & 0x100000) << 12; /* imm[20]  ( >> 20  << 7 + 5 + 8 + 1 + 11) */
 }
 
-instruction* init_instruction_memory(unsigned int len)
+instruction* init_instruction_memory(unsigned len)
 {
     instruction *head;
 
@@ -216,19 +216,17 @@ instruction* init_instruction_memory(unsigned int len)
     return head;
 }
 
-void destroy_instruction_memory(instruction *instr_mem, unsigned int len)
+void destroy_instruction_memory(instruction *instr_mem)
 {
-    int i;
-
     free(instr_mem);
 }
 
-void print_assembled_structure(const instruction *instr_mem, unsigned int len)
+void print_assembled_structure(const instruction *instr_mem, unsigned len)
 {
-    int i;
+    unsigned i;
 
     for (i=0; i < len; i++) {
-        printf("instruction_memory[%d]: 0x%x    \t0b", i,  instr_mem[i]);
+        printf("instruction_memory[%d]:\t0x%x    \t0b", i,  instr_mem[i]);
         print_bin(instr_mem[i]);
         printf("\n");
     }

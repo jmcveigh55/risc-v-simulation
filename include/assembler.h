@@ -8,7 +8,7 @@
 
 typedef uint32_t instruction;
 
-void instr_mem_from_asm_parse_list(instruction *instr_mem, linked_list *p_list, unsigned int len);
+void instr_mem_from_asm_parse_list(instruction *instr_mem, linked_list *p_list, unsigned len);
 static instruction instr_from_asm_parse(parse *p_line);
 static void convert_R_format(instruction *instr, char *instr_meta, parse *p_line);
 static void convert_I_format(instruction *instr, char *instr_meta, parse *p_line);
@@ -17,9 +17,9 @@ static void convert_B_format(instruction *instr, char *instr_meta, parse *p_line
 static void convert_U_format(instruction *instr, char *instr_meta, parse *p_line);
 static void convert_J_format(instruction *instr, char *instr_meta, parse *p_line);
 
-instruction* init_instruction_memory(unsigned int len);
-void destroy_instruction_memory(instruction *instr_mem, unsigned int len);
-void print_assembled_structure(const instruction *instr_mem, unsigned int len);
+instruction* init_instruction_memory(unsigned len);
+void destroy_instruction_memory(instruction *instr_mem);
+void print_assembled_structure(const instruction *instr_mem, unsigned len);
 
 
 

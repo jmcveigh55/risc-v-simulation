@@ -30,9 +30,10 @@ void linked_list_reverse(linked_list **head)
     (*head)->next = prev;
 }
 
-unsigned int is_in(const char *item, const char *array[])
+unsigned is_in(const char *item, const char *array[])
 {
-    int i;
+    unsigned i;
+
     for(i=0; array[i]; i++)
         if (!strcmp(item, array[i]))
         return 1;
@@ -50,9 +51,9 @@ char* to_lower(char *input_string)
     return input_string;
 }
 
-void print_bin(unsigned int number)
+void print_bin(unsigned number)
 {
-    unsigned int i;
+    unsigned i;
 
     for (i = 1 << 31; i > 0; i = i / 2)
         (number & i) ? printf("1") : printf("0");
