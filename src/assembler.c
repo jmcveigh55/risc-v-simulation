@@ -26,7 +26,7 @@ static instruction instr_from_asm_parse(parse *p_line)
 
     instrs_fd = fopen("src/data/RISC-V_instruction_set.csv", "r");
     if (!instrs_fd) {
-        perror("Error opening instruction reference file");
+        perror("instr_from_asm_parse: Error opening instruction reference file");
         exit(EXIT_FAILURE);
     }
 
@@ -35,6 +35,10 @@ static instruction instr_from_asm_parse(parse *p_line)
     while( getline( &test_meta, &len, instrs_fd ) != -1 ) {
         test_meta[ strlen(test_meta)-1 ] = '\0';
         test_operand = strdup( test_meta );
+        if (!test_operand) {
+            perror("instr_from_asm_parse: Failed to strdup test_operand: ");
+            exit(EXIT_FAILURE);
+        }
         strtok(test_operand, ",");
 
         if (!strcmp(p_line->operand, test_operand))
@@ -100,6 +104,10 @@ static void convert_I_format(instruction *instr, char *instr_meta, parse *p_line
 
     if(strchr(p_line->parameters[1], '(')) {
         char *temp = strdup(p_line->parameters[1]);
+        if (!temp) {
+            perror("convert_I_format: Failed to strdup temp: ");
+            exit(EXIT_FAILURE);
+        }
 
         imm = strtol(strtok(temp, "("), NULL, 10);
         rs1 = reg_index( strtok(NULL, ")") );
@@ -131,6 +139,10 @@ static void convert_S_format(instruction *instr, char *instr_meta, parse *p_line
 
     if(strchr(p_line->parameters[1], '(')) {
         char *temp = strdup(p_line->parameters[1]);
+        if (!temp) {
+            perror("convert_S_format: Failed to strdup temp: ");
+            exit(EXIT_FAILURE);
+        }
 
         imm = strtol(strtok(temp, "("), NULL, 10);
         rs1 = reg_index( strtok(NULL, ")") );
@@ -209,7 +221,7 @@ instruction* init_instruction_memory(unsigned len)
 
     head = (instruction*)malloc(len * sizeof(*head));
     if (!head) {
-        perror("Failed to malloc head: ");
+        perror("init_instruction_memory: Failed to malloc head: ");
         exit(EXIT_FAILURE);
     }
 

@@ -9,6 +9,10 @@ void linked_list_add_head(linked_list **head, void *item)
 {
     linked_list *new;
     new = (linked_list*)malloc(sizeof(*new));
+    if (!new) {
+        perror("linked_list_add_head: Failed to malloc new: ");
+        exit(EXIT_FAILURE);
+    }
     new->item = item;
 
     new->next = (*head)->next; /* Line causing seg fault */
